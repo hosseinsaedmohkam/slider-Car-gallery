@@ -1,6 +1,6 @@
 # slider-Car-gallery
-![Image](https://github.com/user-attachments/assets/ce5359f0-5a4f-432f-8871-5fdec295a19d)
-[Demo Project]()
+
+[Demo Project](https://hosseinsaedmohkam.github.io/slider-Car-gallery/)
 
 - Developed by Hossein saedmohkam
 
