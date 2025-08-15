@@ -1,0 +1,210 @@
+<img src="" alt="">
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider Gallery</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        .slider {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+
+            >span {
+                z-index: 999;
+                cursor: pointer;
+                position: absolute;
+                top: 90%;
+                font-size: 30px;
+
+                &:first-of-type {
+                    left: -200px;
+                }
+
+                &:last-of-type {
+                    right: 5%;
+                }
+            }
+        }
+
+        .bus {
+            height: 100%;
+            display: flex;
+
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: 0.5s linear;
+
+            >img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+        #list {
+            width: 80%;
+            height: 85px;
+            gap: 10px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: absolute;
+            top: 40%;
+            left: 2%;
+            padding: 10px 0;
+            border-radius: 20px;
+
+
+            >img {
+                width: 73px;
+                height: 73px;
+                border-radius: 30%;
+                border: solid 2px bisque;
+                margin: 0 5px;
+                cursor: pointer;
+                filter: sepia(100%);
+                transition: 0.5s;
+
+                &:hover {
+                    filter: sepia(0);
+                    transform: scale(1.3);
+                }
+
+
+            }
+        }
+
+        .flash {
+            width: 50px;
+            height: 50px;
+            border: solid 1px black;
+            border-radius: 20%;
+            background-color: rgba(42, 41, 48, 0.588);
+
+            &:hover {
+                background-color: gold;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="slider">
+        <span id="left"><i class="bi bi-chevron-left flash"></i></span>
+        <span id="right"><i class="bi bi-chevron-right flash"></i></span>
+
+        <div class="bus">
+            <img src="img/b5.jpg" alt="">
+            <img src="img/b4.jpg" alt="">
+            <img src="img/b3.jpg" alt="">
+            <img src="img/b26.jpg" alt="">
+            <img src="img/b32.jpg" alt="">
+            <img src="img/b7.jpg" alt="">
+            <img src="img/b8.png" alt="">
+            <img src="img/b8.webp" alt="">
+            <img src="img/b9.jpg" alt="">
+            <img src="img/b28.webp" alt="">
+            <img src="img/b27.webp" alt="">
+        </div>
+        <ul id="list"></ul>
+    </div>
+    <audio id="myAudio">
+        <source src="music/57-Atlantic (Original Mix).mp3" type="audio/mp3">
+
+    </audio>
+
+</body>
+<script>
+    let turn = 0
+    const $bus = document.querySelector('.bus')
+    let $img = document.querySelectorAll('.bus>img')
+    const $left = document.getElementById('left')
+    const $right = document.getElementById('right')
+    const $list = document.querySelector('#list')
+    const audio = document.getElementById('myAudio')
+    audio.autoplay = true;
+    audio.loop = true;
+    setInterval(() => {
+        $autoSlider()
+    }, 5000);
+
+    let lastImg = document.createElement('img')
+    lastImg.src = $img[0].src
+    $bus.appendChild(lastImg)
+
+    $img = document.querySelectorAll('.bus>img')
+    $bus.style.width = ($img.length * 1600) + 'px'
+
+    $right.addEventListener('click', $autoSlider)
+
+    function $autoSlider() {
+        audio.play()
+        if (turn < $img.length - 1) {
+            turn++
+            $bus.style.left = - (turn * 1600) + 'px'
+            console.log(turn);
+            if (turn == $img.length - 1) {
+                setTimeout(() => {
+                    $bus.style.transition = '0s'
+                    turn = 0
+                    $bus.style.left = '0px'
+                    setTimeout(() => {
+                        $bus.style.transition = '0.5s'
+                    }, 100);
+                }, 400);
+            }
+        } else {
+            $bus.style.left = 0
+            turn = 0
+        }
+        if (turn > 0) {
+            $left.style.left = '5%'
+        }
+    }
+
+    $left.addEventListener('click', () => {
+        audio.play()
+        if (turn > 0) {
+            turn--
+            $bus.style.left = -(turn * 1600) + 'px'
+            if (turn == 0) {
+                $left.style.left = '-200px'
+            }
+        }
+    })
+
+
+    for (let i = 0; i < $img.length - 1; i++) {
+        let x = document.createElement('img')
+        x.src = $img[i].src
+        $list.appendChild(x)
+    }
+
+    const imgTumb = document.querySelectorAll('#list>img')
+    imgTumb.forEach((val, i) => {
+        val.addEventListener('click', () => {
+            audio.play()
+            turn = i - 1
+            $autoSlider()
+            if (i == 0) {
+                $left.style.left = '-200px'
+            }
+        })
+    })
+
+</script>
+
+</html>
